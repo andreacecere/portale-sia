@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class UserModel extends Model
+{
+    // tabella di riferimento
+    protected $table = 'tb_utente';
+    protected $primaryKey = 'utente_id';
+
+    // tb fields 
+    //[utente_id]
+    //[username]
+    //[password]
+    //[fk_tipo_utente_id]
+    //[fk_anagrafica_id]
+    //[attivo]
+    //[ultimo_accesso]
+    //[data_creazione]
+    //[visibile]
+
+    protected $allowedFields = ['username', 'password', 'fk_tipo_utente_id', 'fk_anagrafica_id', 'attivo', 'ultimo_accesso', 'data_creazione', 'data_aggiornamento', 'visibile'];
+    protected $beforeInsert = ['beforeInsert'];
+    protected $beforeUpdate = ['beforeUpdate'];
+
+    // metodo richiamato prima dell'inserimento
+    protected function beforeInsert(array $data)
+    {
+        $data = $this->passwordHash($data);
+        $data['data']['data_creazione'] = date('Y-m-d H:i:s');
+
+        return $data;
+    }
+
+    // metodo richiamato prima dell'update
+    protected function beforeUpdate(array $data)
+    {
+        $data = $this->passwordHash($data);
+        $data['data']['data_aggiornamento'] = date('Y-m-d H:i:s');
+        return $data;
+    }
+
+    protected function passwordHash(array $data)
+    {
+        if (isset($data['data']['password']))
+            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+
+        return $data;
+    }
+
+    public function getUsers()
+    {
+        $builder = $this->db->table('v_utenti');
+        return  $builder->get()->getResultArray();
+    }
+
+    public function getDettaglioUser($utente_id)
+    {
+        $builder = $this->db->table('v_utenti')->where('utente_id = ', $utente_id);
+        return  $builder->get()->getResultArray();
+    }
+
+    public function getRuoli()
+    {
+        $builder = $this->db->table('tb_ruolo_utente');
+        return  $builder->get()->getResultArray();
+    }
+
+    public function insertAnagraficaUtente($nome,$cognome,$codice_fiscale,$indirizzo,$localita,$telefono,$email,$attivo,$commesse){
+        $data = [ 
+            'nome' => $nome,
+            'cognome' => $cognome, 
+            'codice_fiscale' => $codice_fiscale,
+            'indirizzo' => $indirizzo,
+            'localita' => $localita, 
+            'telefono' => $telefono,
+            'email' => $email
+        ];
+        $builder = $this->db->table('tb_anagrafica');
+        $builder->insert($data);
+        if ( $builder ){
+            
+            $lastIDInserito = $this->db->insertID();
+            for($i=0; $i<count($commesse); $i++){
+                //echo "Commessa: ".$commesse[$i];
+                $data = [
+                    'fk_utente_id' => $lastIDInserito,
+                    'fk_commessa_id' => $commesse[$i]
+                ];
+                $builder = $this->db->table('tb_commessa_utente');
+                $builder->insert($data);
+            }
+
+            return true; 
+        }
+        else{
+            
+            return $this->db->error(); 
+        }
+    }
+
+}
