@@ -189,8 +189,11 @@ class FormazioneModel extends Model
     }
 
     public function attribuisciAttestatoRisorsa($attestato_disponibile_id,$data_inizio,$data_fine,$anagrafica_id){
-        
+
+  
+        $username=session()->get('username');
         $data = [
+            'created_by'=> $username ,
             'fk_anagrafica' => $anagrafica_id,
             'fk_attestato'  => $attestato_disponibile_id,
             'data_inizio' => $data_inizio, 
