@@ -40,19 +40,7 @@
                                          <input type="text" class="form-control" readonly id="tipo_articolo" value='<?php echo ($articolo[0]['tipo_articolo']); ?>'>
                                          <!--<label for="inputCity">Tipo</label>
                                          <select class="form-control" disabled="disabled" name="tipo_articolo" id="tipo_articolo" style="width: 100%;">
-                                             <?php/*
-                                                for ($i = 0; $i < count($listaTipoProdotti); $i++) {
-                                                    if (strtolower($listaTipoProdotti[$i]['tipo_articolo']) == strtolower(($articolo[0]['tipo_articolo'])))
-                                                        echo "<option selected value='{$listaTipoProdotti[$i]['tipologia_articolo_id']}' >" . $listaTipoProdotti[$i]['tipo_articolo'] . "  </option>";
-                                                } */
-                                                ?> 
-                                         </select> -->
-                                     </div>
-                                     <div class="form-group col-md-4">
-
                                          <label for="condizione_articolo">Condizione</label>
-                                         <input type="text" class="form-control" readonly id="condizione_articolo" value='<?php echo ($articolo[0]['condizione_articolo']); ?>'>
-                                         <!--<label for="condizione_articolo">Condizione</label>
                                          <select class="form-control" disabled="disabled" name="condizione_articolo" id="condizione_articolo" style="width: 100%;">
                                              <?php
                                                 /*

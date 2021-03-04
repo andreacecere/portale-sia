@@ -402,7 +402,6 @@ class ArticoloModel extends Model
         return  $builder->get()->getResultArray();
     }
 
-<<<<<<< HEAD
     public function aggiornaStato($idArticolo, $stato)
     {
         // todo: leggere da tabella stato affidato
@@ -510,60 +509,4 @@ class ArticoloModel extends Model
 
         //$this->db->transStart();
     }
-=======
-    public function getAttributiItemSingolo($id){
-        $builder = $this->db->table('tb_attributo_valore')->where('fk_attributo_id = ', $id);
-        return  $builder->get()->getResultArray();
-    }
-
-    public function insertItem($tipo_articolo,$magazzino,$fornitore,$condizione,$stato,$seriale,$note,$fk_utente_creazione_id,$attributi){
-        $builder = $this->db->table('tb_articolo')->where('articolo_seriale = ', $seriale);
-        if ($builder->countAllResults() > 0) {
-            return "Attenzione, risulta già presente un item con questo seriale";
-        } else {
-            $data = [
-                'articolo_seriale' => $seriale,
-                'fk_tipologia_articolo_id' => $tipo_articolo,
-                'fk_magazzino_id' => $magazzino,
-                'fk_fornitore_id' => $fornitore,
-                'fk_stato_articolo_id' => $stato,
-                'fk_condizione_id' => $condizione,
-                'data_creazione' => date('Y-m-d H:i:s'),
-                'fk_utente_creazione_id' => $fk_utente_creazione_id, 
-                'note' => $note,
-                'attributi' => $attributi
-            ];
-            $builder = $this->db->table('tb_articolo');
-            $builder->insert($data);
-            if ($this->db->affectedRows() >= 0) {
-                return true;
-            } else {
-                return "Errore - Non riesco ad inserire le informazioni " . $this->db->error();
-            }
-        }
-
-    }
-
-
-    // public function test(){
-    //     $query = $this->db->query('SELECT  tb_attributo.attributo_id, tb_attributo.descrizione as descrizioneAttributo, tb_attributo_valore.attributo_valore_id , tb_attributo_valore.descrizione as descrizioneValore
-    //     FROM tb_tipologia_articolo INNER JOIN tb_attributo ON tb_tipologia_articolo.tipologia_articolo_id = tb_attributo.fk_tipologia_articolo_id
-    //     INNER JOIN tb_attributo_valore ON tb_attributo_valore.fk_attributo_id = tb_attributo.attributo_id
-    //     WHERE tipologia_articolo_id = 1');
-    //     $row = $query->getResultArray();
-    //     return $row; 
-    // }
-
-    /*public function ottieniAttributi($id_tipologia_articolo){
-        $builder =  $this->db->table('tb_attributo')->select('attributo_id,descrizione')->where('fk_tipologia_articolo_id = ', $id_tipologia_articolo);
-        return  $builder->get()->getResultArray();
-    }*/
-
-
-
-
-    /* */
-
-    
->>>>>>> 8e0396bc4a2d05833d8ebf1952a2c5e3bbbb8db3
 }
